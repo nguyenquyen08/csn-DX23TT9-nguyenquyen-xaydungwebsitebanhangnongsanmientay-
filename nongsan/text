@@ -1,0 +1,36 @@
+CREATE DATABASE nongsan;
+USE nongsan;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    password VARCHAR(255),
+    role VARCHAR(20) DEFAULT 'user'
+);
+
+
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    price INT,
+    image VARCHAR(255),
+    description TEXT
+);
+
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    total INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users(name,email,password,role)
+VALUES(
+'admin',
+'admin@gmail.com',
+'$2y$10$examplehash',
+'admin'
+);
+
+echo password_hash("123456", PASSWORD_DEFAULT);
