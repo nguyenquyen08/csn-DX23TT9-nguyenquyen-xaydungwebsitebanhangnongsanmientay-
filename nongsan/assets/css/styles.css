@@ -1,0 +1,7 @@
+.nav-btn {
+    width: 140px;           /* tất cả cùng chiều rộng */
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

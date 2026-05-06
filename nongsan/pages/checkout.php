@@ -2,6 +2,7 @@
 
 <?php
 $total = 0;
+include("config/database.php");
 
 if(!empty($_SESSION['cart'])):
 foreach($_SESSION['cart'] as $id => $qty):

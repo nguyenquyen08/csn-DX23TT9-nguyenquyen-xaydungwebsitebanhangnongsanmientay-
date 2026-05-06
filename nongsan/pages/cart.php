@@ -1,31 +1,102 @@
 <?php
+include("C:/xampp/htdocs/nongsan/config/database.php");
 if(!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 
-// THÊM VÀO GIỎ
-if(isset($_GET['add'])){
-    $id = (int)$_GET['add'];
+// if(isset($_GET['add'])){
+//     $id = (int)$_GET['add'];
+//     $qty = isset($_GET['qty']) ? (int)$_GET['qty'] : 1;
+
+//     if(isset($_SESSION['cart'][$id])){
+//         $_SESSION['cart'][$id] += $qty;
+//     } else {
+//         $_SESSION['cart'][$id] = $qty;
+//     }
+
+//     header("Location: index.php?page=cart");
+//     exit;
+// }
+
+
+// // XOÁ SẢN PHẨM
+// if(isset($_GET['remove'])){
+//     $id = (int)$_GET['remove'];
+//     unset($_SESSION['cart'][$id]);
+// }
+
+// // CẬP NHẬT SỐ LƯỢNG
+// if(isset($_POST['update']) && isset($_POST['qty']) && is_array($_POST['qty'])){
+//     foreach($_POST['qty'] as $id => $qty){
+//         $qty = (int)$qty;
+
+//         if($qty > 0){
+//             $_SESSION['cart'][$id] = $qty;
+//         } else {
+//             unset($_SESSION['cart'][$id]);
+//         }
+//     }
+// }
+/* =========================
+   THÊM VÀO GIỎ
+========================= */
+if(isset($_POST['add'])){
+
+    $id = (int)$_POST['add'];
+    $qty = isset($_POST['qty']) ? (int)$_POST['qty'] : 1;
+
+    if($qty < 1){
+        $qty = 1;
+    }
 
     if(isset($_SESSION['cart'][$id])){
-        $_SESSION['cart'][$id]++; // tăng số lượng
+        $_SESSION['cart'][$id] += $qty;
     } else {
-        $_SESSION['cart'][$id] = 1;
+        $_SESSION['cart'][$id] = $qty;
     }
+
+    // nếu bấm đặt hàng
+    if(isset($_POST['buy_now'])){
+        header("Location: index.php?page=checkout");
+    } else {
+        header("Location: index.php?page=cart");
+    }
+
+    exit;
 }
 
-// XOÁ SẢN PHẨM
+/* =========================
+   XOÁ
+========================= */
 if(isset($_GET['remove'])){
     $id = (int)$_GET['remove'];
     unset($_SESSION['cart'][$id]);
+
+    header("Location: index.php?page=cart");
+    exit;
 }
 
-// CẬP NHẬT SỐ LƯỢNG
-if(isset($_POST['update'])){
+/* =========================
+   UPDATE
+========================= */
+if(isset($_POST['update']) && isset($_POST['qty'])){
+
     foreach($_POST['qty'] as $id => $qty){
-        $_SESSION['cart'][$id] = (int)$qty;
-    }
-}
 
-?>
+        $id = (int)$id;
+        $qty = (int)$qty;
+
+        if($qty > 0){
+            $_SESSION['cart'][$id] = $qty;
+        } else {
+            unset($_SESSION['cart'][$id]);
+        }
+    }
+
+    header("Location: index.php?page=cart");
+    exit;
+}
+// ?>
+
+
 
 <h3>🛒 Giỏ hàng của bạn</h3>
 
@@ -45,7 +116,14 @@ $total = 0;
 if(!empty($_SESSION['cart'])):
 foreach($_SESSION['cart'] as $id => $qty):
 
-    $p = $conn->query("SELECT * FROM products WHERE id=$id")->fetch_assoc();
+    $result = $conn->query("SELECT * FROM products WHERE id=$id");
+
+    if(!$result || $result->num_rows == 0){
+        continue;
+    }
+
+    $p = $result->fetch_assoc();
+
     $subtotal = $p['price'] * $qty;
     $total += $subtotal;
 ?>

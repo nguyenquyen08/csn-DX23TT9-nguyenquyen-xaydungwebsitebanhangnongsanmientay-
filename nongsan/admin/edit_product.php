@@ -1,5 +1,5 @@
 <?php
-include("../config/database.php");
+include("C:/xampp/htdocs/nongsan/config/database.php");
 if(!isset($_SESSION['user']) || $_SESSION['user']['role']!='admin'){
     exit("❌ Không có quyền");
 }
@@ -70,7 +70,8 @@ if(isset($_POST['update'])){
 
 <label>Ảnh hiện tại</label><br>
 <!-- <img src="../uploads/<?= $p['image'] ?>" width="120" class="mb-2"><br> -->
-<img src="../uploads/<?= $p['image'] ?>" width="120" class="mb-2"><br>
+<!-- <img src="../uploads/<?= $p['image'] ?>" width="120" class="mb-2"><br> -->
+ <img src="/nongsan/uploads/<?= htmlspecialchars(basename($p['image'])) ?>" width="120">
 <label>Đổi ảnh</label>
 <input type="file" name="image" class="form-control mb-3">
 

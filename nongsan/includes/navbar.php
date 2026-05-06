@@ -43,7 +43,7 @@
 
   <?php if($_SESSION['user']['role']=='admin'): ?>
     <a href="?page=admin" class="btn btn-danger btn-custom">👑 Admin</a>
-    <a href="?page=products" class="btn btn-warning btn-custom">📦 Sản phẩm</a>
+    <!-- <a href="?page=products" class="btn btn-warning btn-custom">📦 Sản phẩm</a> -->
   <?php endif; ?>
 
   <a href="?page=logout" class="btn btn-light btn-custom">Logout</a>
